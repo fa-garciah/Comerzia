@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactForm from "../islands/ContactForm.svelte";
+import { site, services, contactIntro } from "../data/site";
+---
+
+<Base title="Contacto" description="Escríbanos. Un especialista de Comerzia se pondrá en contacto con usted.">
+  <PageHero eyebrow="Contacto" title={site.cta} lead={contactIntro} step={3} />
+
+  <section class="section">
+    <div class="wrap contact">
+      <aside class="contact__aside">
+        <h2 class="contact__h">Escríbanos</h2>
+        <p class="muted">
+          Cuéntenos qué vende y a qué mercado quiere llegar. Con eso basta para
+          la primera conversación.
+        </p>
+        <dl class="contact__list">
+          <div>
+            <dt>Correo</dt>
+            <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+          </div>
+          <div>
+            <dt>Teléfono</dt>
+            <dd><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd>
+          </div>
+        </dl>
+      </aside>
+      <div class="card contact__form">
+        <ContactForm client:visible email={site.email} services={services.map((s) => s.title)} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { display: grid; gap: var(--space-xl); }
+  @media (min-width: 900px) { .contact { grid-template-columns: 0.8fr 1.2fr; gap: var(--space-2xl); align-items: start; } }
+  .contact__h { font-size: var(--step-3); margin-bottom: var(--space-s); }
+  .contact__list { display: grid; gap: var(--space-m); margin-top: var(--space-l); }
+  .contact__list dt {
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+  .contact__list dd { font-size: var(--step-1); font-weight: 600; overflow-wrap: anywhere; }
+  .contact__list a { text-decoration: none; }
+  .contact__list a:hover { text-decoration: underline; }
+  @media (max-width: 599px) { .contact__form { padding: var(--space-m); } }
+</style>

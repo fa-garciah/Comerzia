@@ -1,0 +1,34 @@
+---
+import { site, contactIntro } from "../data/site";
+interface Props { title?: string; body?: string }
+const { title = site.cta, body = contactIntro } = Astro.props;
+---
+
+<section class="cta-band" data-tone="lime">
+  <div class="wrap cta-band__inner">
+    <div>
+      <h2>{title}</h2>
+      <p class="lead cta-band__body">{body}</p>
+    </div>
+    <a class="btn btn--forest cta-band__btn" href="/contacto/">
+      Hablemos
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+    </a>
+  </div>
+</section>
+
+<style>
+  .cta-band { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
+  .cta-band__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-l);
+  }
+  .cta-band h2 { max-width: 14ch; }
+  .cta-band__body { max-width: 46ch; margin-top: var(--space-s); }
+  /* the lima band stays lima in dark mode, so its button stays bosque */
+  .cta-band .cta-band__btn { background: var(--forest); color: #fff; }
+  .cta-band .cta-band__btn:hover { background: var(--forest-deep); }
+</style>

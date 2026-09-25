@@ -1,0 +1,197 @@
+---
+import Base from "../layouts/Base.astro";
+import ReachMap from "../components/ReachMap.astro";
+import AscentRoute from "../components/AscentRoute.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Photo from "../components/Photo.astro";
+import reunion from "../assets/photos/reunion.jpg";
+import almacen from "../assets/photos/almacen.jpg";
+import { site, services, markets, route, about, quotes } from "../data/site";
+
+// quadrant each market occupies on the map: top-left, top-right, bottom-right, bottom-left
+const quadrant = [
+  "M14 14 L2 14 A12 12 0 0 1 14 2 Z",
+  "M14 14 L14 2 A12 12 0 0 1 26 14 Z",
+  "M14 14 L26 14 A12 12 0 0 1 14 26 Z",
+  "M14 14 L14 26 A12 12 0 0 1 2 14 Z",
+];
+---
+
+<Base overHero>
+  <section class="hero" data-tone="forest">
+    <div class="wrap hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Intermediación comercial</p>
+        <h1>{site.slogan}</h1>
+        <p class="lead hero__lead">
+          Creamos conexiones estratégicas que impulsan el crecimiento de su
+          empresa: encontramos a quién venderle, negociamos por usted y damos
+          seguimiento a cada cuenta.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--lime" href="/contacto/">
+            {site.cta}
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+          </a>
+          <a class="btn btn--ghost" href="/servicios/">Ver servicios</a>
+        </div>
+      </div>
+      <ReachMap class="hero__map" id="hero-map" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split firm">
+      <div data-reveal>
+        <p class="eyebrow">Nuestra firma</p>
+        <h2>Comerzia es su socio de negocio</h2>
+        <p class="lead firm__lead">{about.intro}</p>
+        <p class="firm__more"><a class="link-arrow" href="/nosotros/">Conozca la firma →</a></p>
+      </div>
+      <div data-reveal style="--delay:80ms">
+        <Photo
+          src={reunion}
+          alt="Reunión de trabajo: varias personas revisan documentos sobre una mesa."
+          accent
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-tone="subtle" id="servicios">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <p class="eyebrow">Servicios</p>
+        <h2>Del primer contacto a la relación continua</h2>
+      </div>
+      <ol class="services" role="list">
+        {services.map((s, i) => (
+          <li class="card service" data-reveal style={`--i:${i};--delay:${i * 80}ms`}>
+            <span class="service__n">{s.n}</span>
+            <h3>{s.title}</h3>
+            <p class="muted">{s.summary}</p>
+            <a class="link-arrow service__link" href={`/servicios/#${s.slug}`}>
+              Detalle<span class="visually-hidden"> de {s.title.toLowerCase()}</span> →
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="eyebrow">Mercado</p>
+          <h2>Cuatro zonas de alcance</h2>
+        </div>
+        <p class="lead">
+          Trabajamos con empresas que venden a otras empresas. Cada zona del mapa
+          es un tipo de cliente, y la ruta es la misma para todas.
+        </p>
+      </div>
+      <div data-reveal>
+        <Photo
+          src={almacen}
+          alt="Almacén de distribución con estanterías altas y cajas listas para salir."
+          ratio="21 / 8"
+          sizes="(min-width: 1160px) 1160px, 100vw"
+          class="markets__photo"
+        />
+      </div>
+      <ul class="markets" role="list">
+        {markets.map((m, i) => (
+          <li class="market" data-reveal style={`--delay:${i * 70}ms`}>
+            <svg class="market__glyph" viewBox="0 0 28 28" width="36" height="36" aria-hidden="true">
+              <circle cx="14" cy="14" r="12" />
+              <path d={quadrant[i]} />
+            </svg>
+            <div>
+              <h3>{m.title}</h3>
+              <p class="muted">{m.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" data-tone="subtle">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>Una ruta que asciende</h2>
+      </div>
+      <AscentRoute steps={route} />
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <blockquote class="quote" data-reveal>{quotes.home}</blockquote>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(3.5rem, 2rem + 5vw, 6.5rem); overflow: hidden; }
+  .hero__inner { display: grid; gap: var(--space-xl); align-items: center; }
+  @media (min-width: 960px) { .hero__inner { grid-template-columns: 1fr 1fr; gap: var(--space-xl); } }
+  .hero h1 { max-width: 15ch; }
+  .hero__lead { max-width: 46ch; margin-top: var(--space-m); }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-s); margin-top: var(--space-l); }
+  .hero__map { max-width: 560px; }
+  @media (max-width: 959px) { .hero__map { max-width: 420px; } }
+
+  .firm h2 { max-width: 14ch; }
+  .firm__lead { margin-top: var(--space-m); max-width: 46ch; }
+  .firm__more { margin-top: var(--space-m); }
+
+  .head { margin-bottom: var(--space-xl); }
+  .head h2 { max-width: 20ch; }
+  .head--split { display: grid; gap: var(--space-m); align-items: end; }
+  @media (min-width: 900px) { .head--split { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); } }
+
+  .services { display: grid; gap: var(--space-m); }
+  @media (min-width: 860px) { .services { grid-template-columns: repeat(3, 1fr); } }
+  .service { display: flex; flex-direction: column; gap: var(--space-s); padding-top: calc(var(--space-l) + 10px); }
+  /* the lima bar grows card by card: the route, again, at the smallest scale */
+  .service::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: var(--space-l);
+    width: 56px;
+    height: calc(4px + var(--i) * 4px);
+    border-radius: 0 0 3px 3px;
+    background: var(--lime);
+  }
+  .service__n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    color: var(--accent-text);
+  }
+  .service__link { margin-top: auto; padding-top: var(--space-xs); }
+
+  :global(.markets__photo) { margin-bottom: var(--space-l); }
+  @media (max-width: 599px) { :global(.markets__photo) { aspect-ratio: 4 / 3; } }
+  .markets { display: grid; gap: 0; border-top: 1px solid var(--border); }
+  @media (min-width: 720px) { .markets { grid-template-columns: 1fr 1fr; column-gap: var(--space-2xl); } }
+  .market {
+    display: flex;
+    gap: var(--space-m);
+    align-items: flex-start;
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--border);
+  }
+  .market h3 { margin-bottom: 0.35rem; }
+  .market__glyph { flex: none; }
+  .market__glyph circle { fill: none; stroke: var(--border-strong); stroke-width: 1.5; }
+  .market__glyph path { fill: var(--lime); stroke: var(--forest); stroke-width: 1.5; stroke-linejoin: round; }
+
+</style>

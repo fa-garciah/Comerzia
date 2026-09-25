@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Photo from "../components/Photo.astro";
+import acuerdo from "../assets/photos/acuerdo.jpg";
+import { about, values, quotes } from "../data/site";
+---
+
+<Base title="Nosotros" description="Misión, visión y valores de Comerzia, firma de intermediación comercial.">
+  <PageHero eyebrow="Nosotros" title="Una firma para abrir mercado" lead={about.intro} step={2} />
+
+  <div class="wrap about-photo">
+    <Photo
+      src={acuerdo}
+      alt="Dos personas cierran un acuerdo con un apretón de manos sobre un escritorio."
+      ratio="16 / 7"
+      sizes="(min-width: 1160px) 1160px, 100vw"
+      accent
+      eager
+    />
+  </div>
+
+  <section class="section">
+    <div class="wrap mv">
+      <article class="mv__item" data-reveal>
+        <p class="eyebrow">Misión</p>
+        <p class="mv__text">{about.mission}</p>
+      </article>
+      <article class="mv__item" data-reveal style="--delay:80ms">
+        <p class="eyebrow">Visión</p>
+        <p class="mv__text">{about.vision}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" data-tone="subtle">
+    <div class="wrap">
+      <div data-reveal>
+        <p class="eyebrow">Valores</p>
+        <h2 class="values__h">Valores que marcan la diferencia</h2>
+      </div>
+      <ul class="values" role="list">
+        {values.map((v, i) => (
+          <li class="card value" data-reveal style={`--delay:${i * 70}ms`}>
+            <span class="value__n">0{i + 1}</span>
+            <h3>{v.title}</h3>
+            <p class="muted">{v.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <blockquote class="quote" data-reveal>{quotes.about}</blockquote>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* the photo rides up over the bosque header's bottom padding (never more
+     than that padding, so it can't cover the lead) */
+  .about-photo { position: relative; margin-top: calc(-1 * clamp(2rem, 1rem + 3vw, 3.5rem)); }
+  @media (max-width: 599px) { .about-photo :global(.photo) { aspect-ratio: 4 / 3; } }
+
+  .mv { display: grid; gap: var(--space-xl); }
+  @media (min-width: 900px) { .mv { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); } }
+  .mv__item { padding-top: var(--space-m); border-top: 2px solid var(--accent-text); }
+  .mv__text { font-size: var(--step-1); line-height: 1.6; }
+
+  .values__h { max-width: 18ch; margin-bottom: var(--space-xl); }
+  .values { display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .value { display: grid; gap: var(--space-xs); align-content: start; }
+  .value__n { font-family: var(--font-display); font-weight: 700; font-size: var(--step--1); color: var(--accent-text); }
+</style>

@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Página no encontrada">
+  <section class="section nf">
+    <div class="wrap">
+      <p class="eyebrow">Error 404</p>
+      <h1>Esta ruta no lleva a ningún lado</h1>
+      <p class="lead nf__lead">La página que busca no existe o cambió de lugar.</p>
+      <a class="btn btn--forest" href="/">Volver al inicio</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(5rem, 12vw, 9rem); }
+  .nf h1 { max-width: 16ch; font-size: var(--step-4); }
+  .nf__lead { margin: var(--space-m) 0 var(--space-l); }
+</style>

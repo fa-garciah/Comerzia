@@ -1,0 +1,170 @@
+---
+/**
+ * Mapa de alcance por zonas.
+ *
+ * Not geography — the ficha names no territory, and the site does not invent
+ * one. The four quadrants are the four markets; the three rings are the three
+ * services, from first contact (outer) to ongoing follow-up (inner). The lima
+ * line is the route: it climbs from a prospect at the edge, through the
+ * centre where the deal is made, to a new market.
+ *
+ * Hovering a quadrant highlights it (pure CSS, no script).
+ */
+import { markets } from "../data/site";
+
+interface Props { class?: string; id?: string }
+const { class: className, id = "reach-map" } = Astro.props;
+
+const C = 240;
+const rings = [
+  { r: 200, label: "Prospección" },
+  { r: 135, label: "Intermediación" },
+  { r: 70, label: "Seguimiento" },
+];
+const rad = (deg: number) => (deg * Math.PI) / 180;
+const pt = (deg: number, r: number) => ({
+  x: +(C + r * Math.cos(rad(deg))).toFixed(1),
+  y: +(C + r * Math.sin(rad(deg))).toFixed(1),
+});
+
+// SVG angles run clockwise from 3 o'clock. Quadrant starts:
+const start = [180, 270, 0, 90]; // top-left, top-right, bottom-right, bottom-left
+const corner = [
+  { x: 14, y: 28, anchor: "start" },
+  { x: 466, y: 28, anchor: "end" },
+  { x: 466, y: 464, anchor: "end" },
+  { x: 14, y: 464, anchor: "start" },
+];
+// node positions inside a quadrant: [degrees from its start, ring radius]
+const spots: [number, number][] = [[22, 200], [64, 200], [40, 135], [45, 70]];
+
+const R = rings[0].r;
+const zones = markets.map((m, i) => {
+  const a0 = start[i];
+  const p0 = pt(a0, R);
+  const p1 = pt(a0 + 90, R);
+  return {
+    ...m,
+    wedge: `M${C} ${C} L${p0.x} ${p0.y} A${R} ${R} 0 0 1 ${p1.x} ${p1.y} Z`,
+    nodes: spots.map(([d, r]) => pt(a0 + d, r)),
+    label: corner[i],
+  };
+});
+
+// the ascending route: bottom-left prospect → centre → top-right new market
+const route = [pt(112, 200), pt(130, 135), { x: C, y: C }, pt(315, 70), pt(334, 200)];
+const routeD = "M" + route.map((p) => `${p.x} ${p.y}`).join(" L");
+const end = route[route.length - 1];
+---
+
+<figure class:list={["reach", className]} id={id}>
+  <svg viewBox="0 0 480 480" role="img" aria-labelledby={`${id}-t ${id}-d`}>
+    <title id={`${id}-t`}>Mapa de alcance por zonas</title>
+    <desc id={`${id}-d`}>
+      Cuatro zonas de mercado — comercializadoras, distribuidores, industria y
+      proveedores — atravesadas por tres anillos de servicio: prospección,
+      intermediación y seguimiento. Una ruta asciende desde un prospecto en el
+      borde hasta un nuevo mercado.
+    </desc>
+
+    {rings.map((ring) => (
+      <circle class="reach__ring" cx={C} cy={C} r={ring.r} />
+    ))}
+
+    {zones.map((z) => (
+      <g class="reach__zone" data-zone={z.slug}>
+        <path class="reach__wedge" d={z.wedge} />
+        {z.nodes.map((n) => (
+          <>
+            <line class="reach__spoke" x1={C} y1={C} x2={n.x} y2={n.y} />
+            <circle class="reach__node" cx={n.x} cy={n.y} r="4.5" />
+          </>
+        ))}
+        <text class="reach__zone-label" x={z.label.x} y={z.label.y} text-anchor={z.label.anchor}>
+          {z.title}
+        </text>
+      </g>
+    ))}
+
+    {rings.map((ring) => (
+      <text class="reach__ring-label" x={C} y={C + ring.r - 9} text-anchor="middle">
+        {ring.label}
+      </text>
+    ))}
+
+    <path class="reach__route reach__route--under" d={routeD} pathLength="1" />
+    <path class="reach__route" d={routeD} pathLength="1" />
+    <circle class="reach__hub" cx={C} cy={C} r="11" />
+    <circle class="reach__pulse" cx={end.x} cy={end.y} r="9" />
+    <circle class="reach__end" cx={end.x} cy={end.y} r="9" />
+  </svg>
+  <slot />
+</figure>
+
+<style>
+  .reach { width: 100%; max-width: 520px; margin-inline: auto; color: var(--text); }
+  .reach svg { width: 100%; height: auto; overflow: visible; }
+
+  .reach__ring { fill: none; stroke: var(--border-strong); stroke-width: 1; stroke-dasharray: 2 5; }
+  .reach__ring:first-child { stroke-dasharray: none; }
+
+  .reach__wedge {
+    fill: var(--lime);
+    fill-opacity: 0;
+    pointer-events: all;
+    transition: fill-opacity var(--dur) var(--ease-out);
+  }
+  .reach__spoke { stroke: var(--border); stroke-width: 1; transition: stroke var(--dur) var(--ease-out); }
+  .reach__node {
+    fill: var(--surface);
+    stroke: currentColor;
+    stroke-width: 1.5;
+    transition: fill var(--dur) var(--ease-out);
+  }
+  .reach__zone-label {
+    font: 700 14px var(--font-sans);
+    letter-spacing: 0.02em;
+    fill: var(--text-muted);
+    transition: fill var(--dur) var(--ease-out);
+  }
+  .reach__ring-label {
+    font: 600 11px var(--font-sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .reach__zone:hover .reach__wedge { fill-opacity: 0.16; }
+
+  .reach__zone:hover .reach__node { fill: var(--lime); }
+
+  .reach__zone:hover .reach__zone-label { fill: var(--text); }
+
+  .reach__route {
+    fill: none;
+    stroke: var(--lime);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+  }
+  /* lima alone is too pale on light surfaces; a bosque underlay keeps the
+     line readable there and disappears into bosque bands */
+  .reach__route--under { stroke: var(--forest); stroke-width: 7; }
+  .reach__hub { fill: var(--forest); stroke: var(--lime); stroke-width: 3; pointer-events: none; }
+  .reach__end { fill: var(--lime); stroke: var(--forest); stroke-width: 2.5; pointer-events: none; }
+  .reach__pulse { fill: none; stroke: var(--lime); stroke-width: 2; opacity: 0; pointer-events: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reach__route { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.8s var(--ease-out) 0.3s forwards; }
+    .reach__end { transform-box: fill-box; transform-origin: center; transform: scale(0); animation: pop 0.5s var(--ease-out) 1.9s forwards; }
+    .reach__pulse { transform-box: fill-box; transform-origin: center; animation: pulse 2.6s ease-out 2.4s infinite; }
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes pop { to { transform: scale(1); } }
+  @keyframes pulse {
+    0% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(3); }
+  }
+</style>

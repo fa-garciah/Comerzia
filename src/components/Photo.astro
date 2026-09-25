@@ -1,0 +1,84 @@
+---
+/**
+ * A photo, optimised by Astro (AVIF/WebP, responsive widths) and cropped to a
+ * fixed ratio. `accent` adds the brand's three rising bars in a corner, so a
+ * stock photo still reads as Comerzia.
+ *
+ * Photos are from Unsplash (Unsplash License: free for commercial use,
+ * attribution not required). Credits in CONTENT.md.
+ */
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  ratio?: string;
+  sizes?: string;
+  accent?: boolean;
+  eager?: boolean;
+  class?: string;
+}
+const {
+  src,
+  alt,
+  ratio = "4 / 3",
+  sizes = "(min-width: 1160px) 560px, (min-width: 900px) 48vw, 100vw",
+  accent = false,
+  eager = false,
+  class: className,
+} = Astro.props;
+---
+
+<figure class:list={["photo", { "photo--accent": accent }, className]} style={`--ratio:${ratio}`}>
+  <Picture
+    src={src}
+    alt={alt}
+    formats={["avif", "webp"]}
+    widths={[480, 800, 1200, 1600]}
+    sizes={sizes}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+  />
+  {accent && (
+    <span class="photo__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+  )}
+</figure>
+
+<style>
+  .photo {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    border-radius: var(--radius-m);
+    background: var(--bg-subtle);
+  }
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* a light bosque wash keeps unrelated stock palettes in the brand's family */
+  .photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(200deg, transparent 55%, rgb(13 46 31 / 0.35));
+    pointer-events: none;
+  }
+
+  .photo__bars {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 34px;
+  }
+  .photo__bars span { width: 10px; border-radius: 2px 2px 0 0; background: var(--lime); }
+  .photo__bars span:nth-child(1) { height: 36%; }
+  .photo__bars span:nth-child(2) { height: 68%; }
+  .photo__bars span:nth-child(3) { height: 100%; }
+</style>

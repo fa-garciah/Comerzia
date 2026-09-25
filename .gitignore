@@ -1,0 +1,24 @@
+# dependencias y build
+node_modules/
+dist/
+.astro/
+
+# entorno local
+.env
+.env.local
+.env.*.local
+
+# herramientas y editores
+.claude/
+.vscode/
+.idea/
+.netlify/
+
+# material de referencia interno (texto del sitio espejo)
+docs/
+
+# sistema
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

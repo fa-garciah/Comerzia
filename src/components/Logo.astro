@@ -1,0 +1,41 @@
+---
+/**
+ * The mark is the brand idea in one line: a route that climbs from a first
+ * contact (bottom left) to a new market (lima, top right).
+ * `tone="light"` is for dark surfaces.
+ */
+interface Props { size?: number; tone?: "auto" | "light" }
+const { size = 30, tone = "auto" } = Astro.props;
+---
+
+<svg
+  class:list={["logo-mark", `logo-mark--${tone}`]}
+  width={size}
+  height={size}
+  viewBox="0 0 32 32"
+  aria-hidden="true"
+>
+  <rect class="logo-mark__tile" width="32" height="32" rx="8" />
+  <path
+    class="logo-mark__route"
+    d="M8 23 L15 17 L18 19 L24 10"
+    fill="none"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle class="logo-mark__start" cx="8" cy="23" r="2.6" />
+  <circle cx="24" cy="10" r="3.4" fill="#C9E265" />
+</svg>
+
+<style>
+  .logo-mark { flex: none; }
+  .logo-mark__tile { fill: var(--forest); }
+  .logo-mark__route { stroke: #f1f5ea; }
+  .logo-mark__start { fill: #f1f5ea; }
+  .logo-mark--light .logo-mark__tile { fill: rgb(255 255 255 / 0.1); }
+  :global(:root[data-theme="dark"]) .logo-mark__tile { fill: rgb(255 255 255 / 0.1); }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .logo-mark__tile { fill: rgb(255 255 255 / 0.1); }
+  }
+</style>

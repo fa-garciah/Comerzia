@@ -1,0 +1,26 @@
+{
+  "name": "comerzia",
+  "version": "1.0.0",
+  "description": "Comerzia — intermediación comercial. Sitio en Astro.",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "deploy:netlify": "astro build && netlify deploy --dir dist --prod"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^9.0.1",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/syne": "^5.3.0",
+    "astro": "^7.3.4",
+    "svelte": "^5.57.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

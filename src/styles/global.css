@@ -1,0 +1,220 @@
+@import "./tokens.css";
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+main { flex: 1; }
+
+img, svg { display: block; max-width: 100%; }
+ul[role="list"], ol[role="list"] { list-style: none; }
+input, select, textarea, button { font: inherit; color: inherit; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.2rem, 1.5rem + 2.6vw, 3.6rem); }
+h2 { font-size: var(--step-4); }
+h3 { font-size: var(--step-2); line-height: 1.2; }
+p { text-wrap: pretty; }
+
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+::selection { background: var(--lime); color: var(--forest-deep); }
+
+/* ---- layout ------------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--page-gutter));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+.section { padding-block: var(--section-y); }
+.section--tight { padding-block: calc(var(--section-y) * 0.6); }
+
+.split {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .split { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
+  .split--wide-left { grid-template-columns: 1.2fr 1fr; }
+  .split--top { align-items: start; }
+}
+
+/* ---- type helpers ------------------------------------------------------- */
+.lead { font-size: var(--step-1); line-height: 1.6; color: var(--text-muted); }
+.muted { color: var(--text-muted); }
+.small { font-size: var(--step--1); }
+.measure { max-width: var(--measure); }
+
+/* Eyebrow: a tiny three-bar climb before the label — the route, in small. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: var(--space-s);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 14px;
+  flex: none;
+  background:
+    linear-gradient(currentColor 0 0) 0 100% / 5px 5px,
+    linear-gradient(currentColor 0 0) 8px 100% / 5px 9px,
+    linear-gradient(currentColor 0 0) 16px 100% / 5px 14px;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+/* ---- buttons ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.75rem 1.4rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: var(--step--1);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+.btn svg { transition: transform var(--dur) var(--ease-out); }
+.btn:hover svg { transform: translate(2px, -2px); }
+
+.btn--lime { background: var(--lime); color: var(--forest-deep); }
+.btn--lime:hover { background: #d6ec7e; }
+
+.btn--forest { background: var(--forest); color: #fff; }
+.btn--forest:hover { background: var(--forest-deep); }
+:root[data-theme="dark"] .btn--forest { background: var(--lime); color: var(--forest-deep); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn--forest { background: var(--lime); color: var(--forest-deep); }
+}
+
+.btn--ghost { border-color: var(--border-strong); color: var(--text); background: transparent; }
+.btn--ghost:hover { border-color: var(--text); }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  color: var(--accent-text);
+  text-decoration: none;
+}
+.link-arrow:hover { text-decoration: underline; }
+
+/* ---- pieces shared across pages ---------------------------------------- */
+.card {
+  position: relative;
+  padding: var(--space-l);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+}
+
+.quote {
+  max-width: 34ch;
+  margin-inline: auto;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+.quote::before {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin: 0 auto var(--space-m);
+  border-radius: 2px;
+  background: var(--lime);
+}
+
+.checklist { display: grid; gap: 0.55rem; list-style: none; }
+.checklist li { display: flex; gap: 0.65rem; align-items: baseline; }
+.checklist li::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lime) 30%, transparent);
+  transform: translateY(-1px);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  background: var(--lime);
+  color: var(--forest-deep);
+  font-weight: 700;
+  border-radius: var(--radius-s);
+}
+.skip-link:focus { top: 1rem; }
+
+/* scroll reveal — opt in with [data-reveal]; only hides when JS is running */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+}

@@ -1,0 +1,42 @@
+---
+/** Bosque band that opens every inner page. The steps on the right are the
+    route in miniature; `step` (1–3) says how far up this page sits. */
+interface Props { eyebrow: string; title: string; lead?: string; step?: 1 | 2 | 3 }
+const { eyebrow, title, lead, step = 1 } = Astro.props;
+---
+
+<section class="page-hero" data-tone="forest">
+  <div class="wrap page-hero__inner">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      {lead && <p class="lead page-hero__lead">{lead}</p>}
+    </div>
+    <div class="page-hero__stairs" aria-hidden="true">
+      {[1, 2, 3].map((n) => <span class:list={{ "is-on": n <= step }} style={`--n:${n}`}></span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero { padding-block: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) clamp(3rem, 2rem + 4vw, 5rem); }
+  .page-hero__inner {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: end;
+  }
+  @media (min-width: 900px) { .page-hero__inner { grid-template-columns: 1fr auto; } }
+  .page-hero h1 { max-width: 16ch; }
+  .page-hero__lead { max-width: 52ch; margin-top: var(--space-m); }
+
+  .page-hero__stairs { display: flex; align-items: flex-end; gap: 10px; height: 132px; }
+  .page-hero__stairs span {
+    width: 42px;
+    height: calc(var(--n) * 33%);
+    border-radius: 6px 6px 0 0;
+    border: 1.5px solid var(--border-strong);
+    border-bottom: 0;
+  }
+  .page-hero__stairs span.is-on { background: var(--lime); border-color: var(--lime); }
+  @media (max-width: 899px) { .page-hero__stairs { height: 72px; } .page-hero__stairs span { width: 26px; } }
+</style>

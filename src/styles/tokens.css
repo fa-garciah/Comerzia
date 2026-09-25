@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Comerzia — design tokens
+
+   Verde bosque carries the brand, lima marks what moves: the route, the active
+   zone, the one call to action. Lima is a fill, never text on a light
+   surface (1.4:1) — on bosque it reads at 7.5:1.
+
+   `--forest` / `--lime` are fixed hues. `--accent-text` is the readable accent
+   for text; it flips on dark surfaces.
+   ========================================================================== */
+
+@import "@fontsource-variable/syne/wght.css";
+@import "@fontsource-variable/manrope/wght.css";
+
+:root {
+  --forest:      #14452f;
+  --forest-deep: #0d2e1f;
+  --forest-mid:  #1d5a3e;
+  --lime:        #c9e265;
+  --lime-soft:   #e6f1b8;
+  --paper:       #f5f7ef;
+  --ink:         #10251a;
+
+  /* semantic layer (re-pointed by themes and dark bands) */
+  --bg:            #fbfcf8;
+  --bg-subtle:     var(--paper);
+  --surface:       #ffffff;
+  --border:        rgb(16 37 26 / 0.13);
+  --border-strong: rgb(16 37 26 / 0.3);
+  --text:          var(--ink);
+  --text-muted:    rgb(16 37 26 / 0.68);
+  --accent-text:   var(--forest);
+  --focus:         var(--forest);
+
+  --font-display: "Syne Variable", "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step--1: clamp(0.86rem, 0.84rem + 0.1vw, 0.92rem);
+  --step-0:  1.0625rem;
+  --step-1:  clamp(1.15rem, 1.1rem + 0.2vw, 1.28rem);
+  --step-2:  clamp(1.35rem, 1.25rem + 0.45vw, 1.65rem);
+  --step-3:  clamp(1.65rem, 1.45rem + 0.9vw, 2.2rem);
+  --step-4:  clamp(2rem, 1.6rem + 1.7vw, 3rem);
+  --step-5:  clamp(2.35rem, 1.7rem + 2.8vw, 4rem);
+
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-s:   1rem;
+  --space-m:   1.5rem;
+  --space-l:   2.25rem;
+  --space-xl:  3.5rem;
+  --space-2xl: 5rem;
+  --section-y: clamp(3.75rem, 2.5rem + 5vw, 7rem);
+
+  --page-max: 1160px;
+  --page-gutter: clamp(1rem, 0.6rem + 2.2vw, 3rem);
+  --measure: 62ch;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 220ms;
+  --dur-slow: 600ms;
+
+  --header-h: 72px;
+}
+
+/* dark: bosque becomes the page, lima becomes the readable accent */
+:root[data-theme="dark"] {
+  --bg:            var(--forest-deep);
+  --bg-subtle:     #10382a;
+  --surface:       #123d2b;
+  --border:        rgb(255 255 255 / 0.14);
+  --border-strong: rgb(255 255 255 / 0.3);
+  --text:          #eef3e6;
+  --text-muted:    rgb(238 243 230 / 0.72);
+  --accent-text:   var(--lime);
+  --focus:         var(--lime);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:            var(--forest-deep);
+    --bg-subtle:     #10382a;
+    --surface:       #123d2b;
+    --border:        rgb(255 255 255 / 0.14);
+    --border-strong: rgb(255 255 255 / 0.3);
+    --text:          #eef3e6;
+    --text-muted:    rgb(238 243 230 / 0.72);
+    --accent-text:   var(--lime);
+    --focus:         var(--lime);
+  }
+}
+
+/* ---- section tones. Each re-sets `color`, which <body> already resolved. */
+[data-tone] { color: var(--text); }
+[data-tone="subtle"] { background: var(--bg-subtle); }
+
+[data-tone="forest"] {
+  background: var(--forest);
+  --surface: var(--forest-mid);
+  --border: rgb(255 255 255 / 0.16);
+  --border-strong: rgb(255 255 255 / 0.34);
+  --text: #f1f5ea;
+  --text-muted: rgb(241 245 234 / 0.76);
+  --accent-text: var(--lime);
+  --focus: var(--lime);
+}
+
+/* the one lima band: the closing call to action */
+[data-tone="lime"] {
+  background: var(--lime);
+  --surface: var(--lime-soft);
+  --border: rgb(20 69 47 / 0.2);
+  --border-strong: rgb(20 69 47 / 0.4);
+  --text: var(--forest-deep);
+  --text-muted: rgb(13 46 31 / 0.78);
+  --accent-text: var(--forest);
+  --focus: var(--forest);
+}

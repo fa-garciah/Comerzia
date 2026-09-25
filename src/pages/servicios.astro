@@ -1,0 +1,96 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { services, markets, quotes } from "../data/site";
+---
+
+<Base title="Servicios" description="Prospección, intermediación y seguimiento comercial para comercializadoras, distribuidores, industria y proveedores.">
+  <PageHero
+    eyebrow="Servicios"
+    title="Tres tramos de una misma ruta"
+    lead="Prospección, intermediación y seguimiento comercial. Puede contratar un tramo o la ruta completa; en todos los casos adaptamos el servicio a lo que su empresa vende y a quién."
+    step={1}
+  />
+
+  {services.map((s, i) => (
+    <section class="section svc" id={s.slug} data-tone={i % 2 ? "subtle" : undefined}>
+      <div class="wrap svc__grid">
+        <div class="svc__aside" data-reveal>
+          <span class="svc__n">{s.n}</span>
+          <div class="svc__bars" aria-hidden="true">
+            {services.map((_, j) => <span class:list={{ "is-on": j <= i }} style={`--h:${(j + 1) * 33}%`}></span>)}
+          </div>
+        </div>
+        <div data-reveal style="--delay:60ms">
+          <h2>{s.title}</h2>
+          <p class="lead svc__summary">{s.summary}</p>
+          <p class="svc__body">{s.body}</p>
+        </div>
+        <div class="card svc__card" data-reveal style="--delay:120ms">
+          <p class="svc__card-h">Qué incluye</p>
+          <ul class="checklist" role="list">
+            {s.includes.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section section--tight" data-tone="forest">
+    <div class="wrap">
+      <p class="eyebrow">Para quién</p>
+      <ul class="for" role="list">
+        {markets.map((m) => <li>{m.title}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <blockquote class="quote" data-reveal>{quotes.services}</blockquote>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .svc__grid { display: grid; gap: var(--space-l); }
+  @media (min-width: 960px) {
+    .svc__grid { grid-template-columns: 120px 1.3fr 1fr; gap: var(--space-xl); align-items: start; }
+  }
+  .svc__aside { display: flex; align-items: flex-end; gap: var(--space-m); }
+  @media (min-width: 960px) { .svc__aside { flex-direction: column; align-items: flex-start; } }
+  .svc__n {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-5);
+    line-height: 0.9;
+    color: var(--accent-text);
+  }
+  .svc__bars { display: flex; align-items: flex-end; gap: 6px; height: 40px; }
+  .svc__bars span { width: 14px; height: var(--h); border-radius: 3px 3px 0 0; border: 1.5px solid var(--border-strong); border-bottom: 0; }
+  .svc__bars span.is-on { background: var(--lime); border-color: var(--forest); }
+  .svc h2 { font-size: var(--step-3); }
+  .svc__summary { margin-top: var(--space-s); }
+  .svc__body { margin-top: var(--space-s); color: var(--text-muted); max-width: var(--measure); }
+  .svc__card-h {
+    margin-bottom: var(--space-s);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+
+  .for {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-l);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-3);
+  }
+  .for li:not(:last-child)::after { content: "·"; margin-left: var(--space-l); color: var(--lime); }
+</style>
