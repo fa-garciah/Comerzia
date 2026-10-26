@@ -1,8 +1,9 @@
 <script lang="ts">
-  /* Svelte island. Fields follow the mirror's form (nombre, apellido, empresa,
-     cargo, correo, teléfono, servicio). There is no backend yet, so after
-     validating it hands off to a mailto: — honest, and visible to the user. */
-  let { email, services = [] } = $props<{ email: string; services?: string[] }>();
+  /* Svelte island. No contact e-mail is published until the client delivers
+     one on its own domain, so the form posts to Netlify Forms. Astro renders
+     this island to static HTML, which is where Netlify detects the form
+     (name="contacto"); the fetch below mirrors a plain form POST. */
+  let { services = [] } = $props<{ services?: string[] }>();
 
   type Field = "nombre" | "apellido" | "empresa" | "cargo" | "correo" | "telefono" | "servicio" | "mensaje";
   const required: Field[] = ["nombre", "apellido", "correo", "telefono"];
@@ -12,12 +13,14 @@
   });
   let errors = $state<Partial<Record<Field, string>>>({});
   let status = $state("");
+  let sending = $state(false);
+  let bot = $state("");
 
   function validate(f: Field): string {
     const v = values[f].trim();
     if (required.includes(f) && !v) return "Este campo es obligatorio.";
-    if (f === "correo" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "Revise el formato del correo.";
-    if (f === "telefono" && v && v.replace(/\D/g, "").length < 10) return "Escriba un teléfono de al menos 10 dígitos.";
+    if (f === "correo" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "Revisa el formato del correo.";
+    if (f === "telefono" && v && v.replace(/\D/g, "").length < 10) return "Escribe un teléfono de al menos 10 dígitos.";
     return "";
   }
 
@@ -27,7 +30,7 @@
     else delete errors[f];
   }
 
-  function onSubmit(e: SubmitEvent) {
+  async function onSubmit(e: SubmitEvent) {
     e.preventDefault();
     const next: Partial<Record<Field, string>> = {};
     for (const f of Object.keys(values) as Field[]) {
@@ -37,26 +40,27 @@
     errors = next;
     const first = Object.keys(next)[0];
     if (first) {
-      status = "Revise los campos marcados.";
+      status = "Revisa los campos marcados.";
       document.getElementById(`f-${first}`)?.focus();
       return;
     }
 
-    const body = [
-      `Nombre: ${values.nombre} ${values.apellido}`,
-      `Empresa: ${values.empresa || "—"}`,
-      `Cargo: ${values.cargo || "—"}`,
-      `Correo: ${values.correo}`,
-      `Teléfono: ${values.telefono}`,
-      `Servicio de interés: ${values.servicio || "—"}`,
-      "",
-      values.mensaje,
-    ].join("\n");
-
-    status = "Abriendo su cliente de correo…";
-    window.location.href =
-      `mailto:${email}?subject=${encodeURIComponent("Contacto desde comerzia.mx")}` +
-      `&body=${encodeURIComponent(body)}`;
+    sending = true;
+    status = "Enviando…";
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ "form-name": "contacto", "bot-field": bot, ...values }).toString(),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      for (const f of Object.keys(values) as Field[]) values[f] = "";
+      status = "Gracias. Recibimos tu mensaje y te responderemos al correo que nos dejaste.";
+    } catch {
+      status = "No se pudo enviar el mensaje. Inténtalo de nuevo en unos minutos.";
+    } finally {
+      sending = false;
+    }
   }
 </script>
 
@@ -75,7 +79,11 @@
   </label>
 {/snippet}
 
-<form class="cform" onsubmit={onSubmit} novalidate>
+<form class="cform" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit={onSubmit} novalidate>
+  <input type="hidden" name="form-name" value="contacto" />
+  <p class="cform__hp" aria-hidden="true">
+    <label>No llenes este campo <input name="bot-field" tabindex="-1" autocomplete="off" bind:value={bot} /></label>
+  </p>
   <div class="cform__row">
     {@render input("nombre", "Nombre", "text", "given-name")}
     {@render input("apellido", "Apellido", "text", "family-name")}
@@ -92,24 +100,24 @@
   <label class="field">
     <span class="field__label">Servicio de interés</span>
     <select id="f-servicio" name="servicio" bind:value={values.servicio}>
-      <option value="">Seleccione una opción</option>
+      <option value="">Selecciona una opción</option>
       {#each services as s}<option value={s}>{s}</option>{/each}
     </select>
   </label>
 
   <label class="field">
-    <span class="field__label">¿Qué vende y a qué mercado quiere llegar?</span>
+    <span class="field__label">¿Qué vendes, a quién le vendes hoy y dónde quieres crecer?</span>
     <textarea id="f-mensaje" name="mensaje" rows="4" bind:value={values.mensaje}></textarea>
   </label>
 
   <div class="cform__foot">
-    <button class="btn btn--forest" type="submit">
+    <button class="btn btn--forest" type="submit" disabled={sending}>
       Enviar
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
     </button>
     <p class="cform__status small" role="status" aria-live="polite">{status}</p>
   </div>
-  <p class="small muted cform__note"><em aria-hidden="true">*</em> Campos obligatorios. Al enviar se abrirá su programa de correo con el mensaje listo.</p>
+  <p class="small muted cform__note"><em aria-hidden="true">*</em> Campos obligatorios. Usamos tus datos sólo para responderte; consulta el <a href="/aviso-de-privacidad/">aviso de privacidad</a>.</p>
 </form>
 
 <style>
@@ -143,4 +151,6 @@
 
   .cform__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-m); }
   .cform__status { color: var(--text-muted); }
+  .cform__hp { position: absolute; left: -9999px; }
+  button:disabled { opacity: 0.6; cursor: progress; }
 </style>

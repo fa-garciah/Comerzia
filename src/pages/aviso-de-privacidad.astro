@@ -2,38 +2,49 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import { site } from "../data/site";
+const { legalName } = site;
 ---
 
-<Base title="Aviso de privacidad" description={`Aviso de privacidad de ${site.legalName}.`}>
+<Base title="Aviso de privacidad" description={`Aviso de privacidad de ${site.name}.`}>
   <PageHero eyebrow="Legal" title="Aviso de privacidad" />
 
   <section class="section">
     <div class="wrap">
       <div class="legal">
         <p class="legal__note small">
-          <strong>Documento de ejemplo.</strong> Sustitúyalo por un aviso redactado
-          para la empresa conforme a la Ley Federal de Protección de Datos
-          Personales en Posesión de los Particulares antes de publicar el sitio.
+          <strong>Versión preliminar, pendiente de validación legal.</strong> Los
+          campos marcados como «por confirmar» se completarán con los datos
+          definitivos de la empresa.
         </p>
 
         <h2>Responsable</h2>
-        <p>{site.legalName} es responsable del tratamiento de los datos personales que usted nos proporcione a través de este sitio.</p>
+        <p>
+          {legalName ?? <span class="legal__gap">Razón social por confirmar</span>}, con nombre
+          comercial {site.name} y domicilio en {site.address ?? <span class="legal__gap">domicilio por confirmar</span>},
+          es responsable del tratamiento de los datos personales que nos proporciones a través de este sitio.
+        </p>
 
         <h2>Datos que recabamos</h2>
-        <p>Únicamente los que escribe en el formulario de contacto: nombre, apellido, empresa, cargo, correo electrónico, teléfono y su mensaje. Este sitio no utiliza cookies de analítica ni de publicidad.</p>
+        <p>Sólo recabamos los datos que escribes en el formulario de contacto: nombre, apellido, empresa, cargo, correo electrónico, teléfono, servicio de interés y tu mensaje. Este sitio no utiliza cookies de analítica ni de publicidad.</p>
 
         <h2>Para qué los usamos</h2>
         <ul>
-          <li>Responder su solicitud y darle seguimiento comercial.</li>
-          <li>Elaborar la propuesta de servicios que nos solicite.</li>
+          <li>Responder tu solicitud y darle seguimiento.</li>
+          <li>Preparar la propuesta de servicios que nos pidas.</li>
         </ul>
-        <p>No transferimos sus datos a terceros con fines comerciales.</p>
+        <p>No transferimos tus datos a terceros con fines comerciales. Los mensajes del formulario se reciben a través del proveedor de alojamiento del sitio, que sólo los guarda para entregárnoslos.</p>
 
         <h2>Derechos ARCO</h2>
-        <p>Puede solicitar el acceso, rectificación, cancelación u oposición al tratamiento de sus datos escribiendo a <a href={`mailto:${site.email}`}>{site.email}</a>. Responderemos en un plazo máximo de 20 días hábiles.</p>
+        <p>
+          Puedes solicitar el acceso, rectificación, cancelación u oposición al tratamiento de tus datos
+          {site.email
+            ? <>escribiendo a <a href={`mailto:${site.email}`}>{site.email}</a></>
+            : <>a través del <a href="/contacto/">formulario de contacto</a> <span class="legal__gap">correo para solicitudes ARCO por confirmar</span></>}.
+          Te daremos respuesta dentro de los 20 días hábiles siguientes a tu solicitud.
+        </p>
 
         <h2>Cambios</h2>
-        <p>Cualquier modificación a este aviso se publicará en esta misma página.</p>
+        <p>Publicaremos en esta página cualquier cambio a este aviso.</p>
       </div>
     </div>
   </section>
@@ -47,6 +58,13 @@ import { site } from "../data/site";
     border: 1px solid var(--border-strong);
     border-left: 4px solid var(--lime);
     border-radius: var(--radius-s);
+  }
+  .legal__gap {
+    padding: 0 0.35em;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-s);
+    font-size: 0.92em;
+    white-space: nowrap;
   }
   .legal h2 { margin: var(--space-l) 0 var(--space-2xs); font-size: var(--step-1); }
   .legal p, .legal ul { color: var(--text-muted); }

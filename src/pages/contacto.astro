@@ -5,30 +5,42 @@ import ContactForm from "../islands/ContactForm.svelte";
 import { site, services, contactIntro } from "../data/site";
 ---
 
-<Base title="Contacto" description="Escríbanos. Un especialista de Comerzia se pondrá en contacto con usted.">
+<Base title="Contacto" description="Escríbenos. Comerzia te responde para una primera conversación sobre tus cuentas y canales.">
   <PageHero eyebrow="Contacto" title={site.cta} lead={contactIntro} step={3} />
 
   <section class="section">
     <div class="wrap contact">
       <aside class="contact__aside">
-        <h2 class="contact__h">Escríbanos</h2>
+        <h2 class="contact__h">Escríbenos</h2>
         <p class="muted">
-          Cuéntenos qué vende y a qué mercado quiere llegar. Con eso basta para
-          la primera conversación.
+          Cuéntanos qué cuentas atiendes hoy y dónde quieres crecer. Con eso
+          basta para la primera conversación.
         </p>
-        <dl class="contact__list">
-          <div>
-            <dt>Correo</dt>
-            <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
-          </div>
-          <div>
-            <dt>Teléfono</dt>
-            <dd><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd>
-          </div>
-        </dl>
+        {/* correo y teléfono aparecen solos cuando estén en src/data/site.ts (segunda fase) */}
+        {(site.email || site.phone) ? (
+          <dl class="contact__list">
+            {site.email && (
+              <div>
+                <dt>Correo</dt>
+                <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+              </div>
+            )}
+            {site.phone && (
+              <div>
+                <dt>Teléfono</dt>
+                <dd><a href={`tel:${site.phoneHref}`}>{site.phone}</a></dd>
+              </div>
+            )}
+          </dl>
+        ) : (
+          <p class="muted contact__only">
+            Por ahora atendemos a través de este formulario. Te respondemos al
+            correo que nos dejes.
+          </p>
+        )}
       </aside>
       <div class="card contact__form">
-        <ContactForm client:visible email={site.email} services={services.map((s) => s.title)} />
+        <ContactForm client:visible services={services.map((s) => s.title)} />
       </div>
     </div>
   </section>
@@ -38,6 +50,7 @@ import { site, services, contactIntro } from "../data/site";
   .contact { display: grid; gap: var(--space-xl); }
   @media (min-width: 900px) { .contact { grid-template-columns: 0.8fr 1.2fr; gap: var(--space-2xl); align-items: start; } }
   .contact__h { font-size: var(--step-3); margin-bottom: var(--space-s); }
+  .contact__only { margin-top: var(--space-m); }
   .contact__list { display: grid; gap: var(--space-m); margin-top: var(--space-l); }
   .contact__list dt {
     font-size: var(--step--1);

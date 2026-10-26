@@ -2,16 +2,25 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import CtaBand from "../components/CtaBand.astro";
-import { services, markets, quotes } from "../data/site";
+import { services, markets, route, quotes } from "../data/site";
 ---
 
-<Base title="Servicios" description="Prospección, intermediación y seguimiento comercial para comercializadoras, distribuidores, industria y proveedores.">
+<Base title="Servicios" description="Desarrollo de cuentas, seguimiento de oportunidades, continuidad comercial y expansión de canales para comercializadoras, distribuidores, industria y proveedores.">
   <PageHero
     eyebrow="Servicios"
-    title="Tres tramos de una misma ruta"
-    lead="Prospección, intermediación y seguimiento comercial. Puede contratar un tramo o la ruta completa; en todos los casos adaptamos el servicio a lo que su empresa vende y a quién."
+    title="Cuatro frentes, una misma cuenta"
+    lead="Desarrollo de cuentas, seguimiento de oportunidades, continuidad comercial y expansión de canales. Puedes contratar un frente o los cuatro; en todos los casos partimos de lo que tu empresa ya vende y de a quién."
     step={1}
   />
+
+  <section class="section section--tight funnel-band" aria-labelledby="embudo-h">
+    <div class="wrap">
+      <p class="eyebrow" id="embudo-h">Embudo comercial</p>
+      <ol class="funnel" role="list">
+        {route.map((r) => <li><span>{r.n}</span>{r.title}</li>)}
+      </ol>
+    </div>
+  </section>
 
   {services.map((s, i) => (
     <section class="section svc" id={s.slug} data-tone={i % 2 ? "subtle" : undefined}>
@@ -19,7 +28,7 @@ import { services, markets, quotes } from "../data/site";
         <div class="svc__aside" data-reveal>
           <span class="svc__n">{s.n}</span>
           <div class="svc__bars" aria-hidden="true">
-            {services.map((_, j) => <span class:list={{ "is-on": j <= i }} style={`--h:${(j + 1) * 33}%`}></span>)}
+            {services.map((_, j) => <span class:list={{ "is-on": j <= i }} style={`--h:${((j + 1) / services.length) * 100}%`}></span>)}
           </div>
         </div>
         <div data-reveal style="--delay:60ms">
@@ -83,6 +92,20 @@ import { services, markets, quotes } from "../data/site";
     text-transform: uppercase;
     color: var(--accent-text);
   }
+
+  .funnel-band { border-bottom: 1px solid var(--border); }
+  .funnel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-s);
+    margin-top: var(--space-s);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+  .funnel li { display: inline-flex; align-items: baseline; gap: 0.45rem; }
+  .funnel li span { font-size: var(--step--1); color: var(--accent-text); }
+  .funnel li:not(:last-child)::after { content: "→"; margin-left: var(--space-xs); color: var(--accent-text); }
 
   .for {
     display: flex;

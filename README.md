@@ -1,6 +1,6 @@
 # Comerzia — comerzia.mx
 
-Sitio de **Comerzia** (Empresa OP 3), firma de intermediación comercial.
+Sitio de **Comerzia** (Empresa OP 3): desarrollo y continuidad de cuentas y canales comerciales.
 Astro 7 estático + una isla Svelte (formulario de contacto). Sin analítica ni rastreo.
 
 ```bash
@@ -14,12 +14,12 @@ npm run check    # tipos y plantillas
 
 | qué cambiar | dónde |
 |---|---|
-| textos, servicios, mercados, valores, citas | `src/data/site.ts` |
-| correo, teléfono, razón social (hoy placeholders) | `src/data/site.ts` → `site` |
+| textos, servicios, embudo, mercados, valores, frases | `src/data/site.ts` |
+| correo, teléfono, razón social, domicilio (hoy `null`, segunda fase) | `src/data/site.ts` → `site` |
 | colores y tipografía | `src/styles/tokens.css` |
 | mapa de alcance por zonas | `src/components/ReachMap.astro` |
-| ruta ascendente (Cómo trabajamos) | `src/components/AscentRoute.astro` |
-| formulario | `src/islands/ContactForm.svelte` |
+| embudo en escalera (portada) | `src/components/AscentRoute.astro` |
+| formulario (Netlify Forms, nombre `contacto`) | `src/islands/ContactForm.svelte` |
 | fotografías (Unsplash) | `src/assets/photos/` · componente `src/components/Photo.astro` |
 
 Páginas: `/`, `/servicios/`, `/nosotros/`, `/contacto/`, `/aviso-de-privacidad/`, `404`.
@@ -30,17 +30,20 @@ Páginas: `/`, `/servicios/`, `/nosotros/`, `/contacto/`, `/aviso-de-privacidad/
   activa, llamado a la acción). La lima nunca se usa como texto sobre fondo claro
   (contraste 1.4:1); sobre el bosque llega a 7.5:1.
 - Syne (titulares) y Manrope (texto), autoalojadas vía `@fontsource-variable` (licencia OFL).
-- **Ruta ascendente**: el logotipo, las barras de los eyebrows, la escalera de
-  «Cómo trabajamos» y las barras de las cabeceras interiores repiten la misma subida.
-- **Mapa de alcance por zonas**: cuatro cuadrantes = los cuatro mercados; tres
-  anillos = los tres servicios. No representa geografía (ver `CONTENT.md`).
+- **Ruta ascendente**: el logotipo, las barras de los eyebrows, la escalera del
+  embudo y las barras de las cabeceras interiores repiten la misma subida.
+- **Mapa de alcance por zonas**: cuatro cuadrantes = los cuatro mercados; cuatro
+  anillos = los cuatro servicios, de la cuenta (centro) a los canales (borde). No
+  representa geografía (ver `CONTENT.md`).
 
 ## Antes de publicar
 
-1. Correo, teléfono y razón social reales en `src/data/site.ts`.
-2. Aviso de privacidad redactado para la empresa (hoy es un ejemplo, y lo dice en la página).
-3. Si se quiere que el formulario envíe sin abrir el cliente de correo, conectar un
-   backend (Netlify Forms, Formspree…) en `ContactForm.svelte`.
-4. `PUBLIC_ALLOW_INDEX=1` en `.env`: mientras no esté, el sitio sale con `noindex`.
+1. Razón social, domicilio, correo con dominio propio y teléfono en `src/data/site.ts`
+   (segunda fase; ver `CONTENT.md`). No usar datos provisionales que parezcan reales.
+2. Aviso de privacidad validado por el área legal del cliente (hoy dice «versión preliminar»).
+3. Netlify: activar **Forms → Form detection** en el sitio y configurar a quién llegan las
+   notificaciones del formulario `contacto`. En `npm run dev` el envío falla (no hay Netlify).
+4. Fotos reales en `src/assets/photos/` y quitar la etiqueta «Imagen ilustrativa» de `Photo.astro`.
+5. `PUBLIC_ALLOW_INDEX=1` en `.env`: mientras no esté, el sitio sale con `noindex`.
 
 Despliegue: `netlify.toml` listo (`npm run build`, publica `dist/`).

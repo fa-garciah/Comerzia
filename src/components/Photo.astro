@@ -5,7 +5,9 @@
  * stock photo still reads as Comerzia.
  *
  * Photos are from Unsplash (Unsplash License: free for commercial use,
- * attribution not required). Credits in CONTENT.md.
+ * attribution not required). Credits in CONTENT.md. Until the client sends
+ * its own, every photo carries an "Imagen ilustrativa" tag so stock people
+ * are never read as Comerzia's team or clients.
  */
 import { Picture } from "astro:assets";
 import type { ImageMetadata } from "astro";
@@ -40,6 +42,7 @@ const {
     loading={eager ? "eager" : "lazy"}
     decoding="async"
   />
+  <figcaption class="photo__note">Imagen ilustrativa</figcaption>
   {accent && (
     <span class="photo__bars" aria-hidden="true"><span></span><span></span><span></span></span>
   )}
@@ -65,6 +68,20 @@ const {
     inset: 0;
     background: linear-gradient(200deg, transparent 55%, rgb(13 46 31 / 0.35));
     pointer-events: none;
+  }
+
+  .photo__note {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: rgb(13 46 31 / 0.72);
+    color: #f1f5ea;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .photo__bars {

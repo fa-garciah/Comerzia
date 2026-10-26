@@ -2,29 +2,34 @@
  * Única fuente de verdad del contenido de Comerzia.
  *
  * Procedencia (ver CONTENT.md):
- *  - servicios, mercados, slogan y llamado a la acción: la ficha de la empresa
- *  - misión, visión, valores, citas, proceso y texto del formulario: el sitio
- *    espejo dpoligonal.mx, adaptados a Comerzia y al trato de usted
+ *  - slogan, valores, mercado y llamado a la acción: la ficha de la empresa
+ *  - enfoque, los cuatro servicios y el embudo: observaciones del cliente del
+ *    29-sep-2026 (desarrollo y continuidad de cuentas y canales)
+ *  - el resto está redactado para Comerzia a partir de ese enfoque
  *
- * No hay cifras, fechas, clientes ni coberturas: ninguna viene de la ficha ni
- * del espejo, y el sitio no afirma lo que el negocio no ha confirmado.
+ * No hay cifras, fechas, clientes, testimonios ni certificaciones: el sitio no
+ * afirma lo que el negocio no ha confirmado. Los datos que faltan (razón
+ * social, domicilio, teléfono, correo con dominio) quedan en `null` hasta la
+ * segunda fase; el sitio los oculta en vez de mostrar datos provisionales.
  */
 export const site = {
   name: "Comerzia",
-  /** placeholder — sustituir por la razón social real */
-  legalName: "Comerzia",
+  /** PENDIENTE (segunda fase): razón social confirmada por el cliente */
+  legalName: null as string | null,
   slogan: "Conexiones comerciales que generan nuevas oportunidades",
-  cta: "Conecte con nuevos mercados",
+  cta: "Conecta con nuevos mercados",
   description:
-    "Comerzia es una firma de intermediación comercial: prospección, intermediación y seguimiento para comercializadoras, distribuidores, industria y proveedores.",
+    "Comerzia desarrolla y da continuidad a cuentas y canales comerciales: desarrollo de cuentas, seguimiento de oportunidades, continuidad comercial y expansión de canales.",
   locale: "es-MX",
   url: "https://comerzia.mx",
-  /** placeholder — sustituir por el correo real */
-  email: "contacto@comerzia.mx",
-  /** placeholder — sustituir por el teléfono real */
-  phone: "+52 55 0000 0000",
-  phoneHref: "+525500000000",
-} as const;
+  /** PENDIENTE (segunda fase): correo con el dominio propio. Mientras sea null, sólo hay formulario. */
+  email: null as string | null,
+  /** PENDIENTE (segunda fase): teléfono. `phoneHref` sin espacios, p. ej. "+525512345678". */
+  phone: null as string | null,
+  phoneHref: null as string | null,
+  /** PENDIENTE (segunda fase): domicilio para el aviso de privacidad */
+  address: null as string | null,
+};
 
 export const nav = [
   { label: "Servicios", href: "/servicios/" },
@@ -32,51 +37,69 @@ export const nav = [
   { label: "Contacto", href: "/contacto/" },
 ] as const;
 
-/** Los tres servicios de la ficha, en el orden en que ocurren. */
+/**
+ * Los cuatro servicios que pidió el cliente. Comerzia entra después del primer
+ * contacto: no hace prospección en frío ni apertura de mercado.
+ */
 export const services = [
   {
-    slug: "prospeccion",
+    slug: "desarrollo-de-cuentas",
     n: "01",
-    title: "Prospección comercial",
+    title: "Desarrollo de cuentas",
     summary:
-      "Identificamos a los prospectos clave para su producto o servicio y establecemos contacto directo con quienes deciden la compra.",
+      "Trazamos con tu equipo un plan para cada cuenta clave: qué te compra hoy, qué más podría comprarte y quién lo decide.",
     body:
-      "Antes de negociar hay que saber con quién. Definimos junto con usted el perfil del cliente y las zonas de mercado a trabajar, y abrimos la conversación con compradores, distribuidores y puntos de venta que de verdad pueden comprar lo que usted ofrece.",
+      "Una cuenta abierta todavía no es una cuenta desarrollada. Revisamos con tu equipo cada cliente que vale la pena hacer crecer, identificamos a las personas que intervienen en la compra y acordamos contigo los pasos para ampliar la relación: nuevas líneas, nuevas sucursales o nuevos volúmenes.",
     includes: [
-      "Perfil del cliente y zonas de mercado a trabajar",
-      "Contacto directo con prospectos clave",
-      "Presentación de su propuesta comercial",
-      "Reuniones con quienes deciden la compra",
+      "Revisión de las cuentas que ya atiendes",
+      "Mapa de contactos y de quién decide la compra",
+      "Plan de desarrollo por cuenta, acordado contigo",
+      "Revisión periódica del plan con tu equipo",
     ],
   },
   {
-    slug: "intermediacion",
+    slug: "seguimiento-de-oportunidades",
     n: "02",
-    title: "Intermediación comercial",
+    title: "Seguimiento de oportunidades",
     summary:
-      "Negociamos a nombre de su empresa bajo reglas de comercialización claras y agilizamos el proceso hasta el cierre de la venta.",
+      "Cada oportunidad abierta tiene un siguiente paso, un responsable y una fecha, para que ninguna se enfríe entre una reunión y otra.",
     body:
-      "Somos el puente entre quien vende y quien compra. Negociamos las condiciones, dejamos por escrito las reglas bajo las que se va a comercializar y coordinamos a ambas partes para que el cierre llegue sin malentendidos.",
+      "Las oportunidades se pierden más por falta de seguimiento que por falta de interés. Llevamos el registro de cada una, acompañamos las propuestas y cotizaciones que emite tu empresa y documentamos las condiciones que se van hablando para que tú las apruebes.",
     includes: [
-      "Negociación de condiciones comerciales",
-      "Reglas de comercialización por escrito",
-      "Coordinación entre comprador y vendedor",
-      "Acompañamiento hasta el cierre",
+      "Registro de oportunidades por cuenta",
+      "Siguiente paso, responsable y fecha para cada una",
+      "Acompañamiento de propuestas y cotizaciones de tu empresa",
+      "Condiciones documentadas para tu aprobación",
     ],
   },
   {
-    slug: "seguimiento",
+    slug: "continuidad-comercial",
     n: "03",
-    title: "Seguimiento comercial",
+    title: "Continuidad comercial",
     summary:
-      "Después del cierre seguimos presentes, para que la primera venta se convierta en una relación comercial continua.",
+      "Después del cierre seguimos presentes: pedidos, ajustes y recompras, para que la primera venta se convierta en una relación estable.",
     body:
-      "Desde el primer contacto hasta la entrega final. Damos seguimiento a pedidos y acuerdos, atendemos los ajustes que pida cada cuenta y detectamos las siguientes oportunidades dentro de la misma cartera.",
+      "El trabajo no termina con el primer pedido. Damos seguimiento a lo acordado, atendemos los ajustes que pide cada cliente y te avisamos a tiempo de recompras y renovaciones, para que la cuenta no dependa de que alguien se acuerde.",
     includes: [
-      "Seguimiento de pedidos y acuerdos",
-      "Atención a ajustes y nuevas condiciones",
-      "Estado de cada cuenta, a la vista",
-      "Nuevas oportunidades en la misma cartera",
+      "Seguimiento a pedidos y acuerdos vigentes",
+      "Atención a ajustes y cambios de condiciones",
+      "Aviso oportuno de recompras y renovaciones",
+      "Reporte del estado de cada cuenta para tu equipo",
+    ],
+  },
+  {
+    slug: "expansion-de-canales",
+    n: "04",
+    title: "Expansión de canales",
+    summary:
+      "Llevamos lo que ya vendes a nuevos canales, partiendo de las cuentas y los productos que hoy funcionan mejor.",
+    body:
+      "Cuando una cuenta y un producto ya funcionan, el siguiente paso es replicarlos. Analizamos contigo por qué canales vendes hoy, cuáles vale la pena sumar y cómo incorporarlos sin descuidar a los clientes que ya tienes.",
+    includes: [
+      "Análisis de los canales por los que vendes hoy",
+      "Canales nuevos a evaluar con tu equipo",
+      "Plan de incorporación de cada canal",
+      "Seguimiento del canal hasta que opere con regularidad",
     ],
   },
 ] as const;
@@ -86,88 +109,89 @@ export const markets = [
   {
     slug: "comercializadoras",
     title: "Comercializadoras",
-    body: "Nuevos compradores y canales para el catálogo que ya mueven.",
+    body: "Más profundidad en las cuentas que ya atienden y nuevos canales para su catálogo.",
   },
   {
     slug: "distribuidores",
     title: "Distribuidores",
-    body: "Marcas que sumar a su red y puntos de venta donde colocarlas.",
+    body: "Atención constante a sus puntos de venta y nuevas rutas para crecer su red.",
   },
   {
     slug: "industria",
     title: "Industria",
-    body: "Salida para su producción hacia quienes la comercializan y la usan.",
+    body: "Continuidad con quienes compran su producción y nuevos canales para colocarla.",
   },
   {
     slug: "proveedores",
     title: "Proveedores",
-    body: "Acceso a las empresas que buscan abastecerse de lo que usted suministra.",
+    body: "Relaciones de abastecimiento que se sostienen pedido tras pedido y suman líneas.",
   },
 ] as const;
 
-/**
- * La secuencia que el espejo describía en sus casos: contacto con prospectos
- * clave → negociación → reglas de comercialización → cierre. Aquí es la ruta.
- */
+/** El embudo que pidió el cliente, tal cual y en este orden. */
 export const route = [
   {
     n: "01",
-    title: "Prospectos clave",
-    body: "Contacto directo con los prospectos que pueden comprar lo que usted vende.",
+    title: "Cuenta objetivo",
+    body: "Elegimos contigo las cuentas con más espacio para crecer, entre las que ya atiendes o acabas de abrir.",
   },
   {
     n: "02",
-    title: "Negociación",
-    body: "Negociamos las condiciones comerciales a nombre de su empresa.",
+    title: "Oportunidad",
+    body: "Detectamos en cada cuenta lo que hoy no te compra y podría comprarte: otra línea, otra sucursal, otro volumen.",
   },
   {
     n: "03",
-    title: "Reglas claras",
-    body: "Reglas de comercialización por escrito, antes de que haya malentendidos.",
+    title: "Seguimiento",
+    body: "Cada oportunidad avanza con un siguiente paso, un responsable y una fecha, y tú ves su estado en todo momento.",
   },
   {
     n: "04",
-    title: "Cierre y seguimiento",
-    body: "Agilizamos el cierre y seguimos presentes después de la venta.",
+    title: "Cierre",
+    body: "Documentamos las condiciones para tu aprobación. La aceptación y el compromiso comercial son siempre de tu empresa.",
+  },
+  {
+    n: "05",
+    title: "Desarrollo de cuenta",
+    body: "Tras el cierre, la cuenta vuelve al plan: nuevos pedidos, recompras y el siguiente canal donde crecer.",
   },
 ] as const;
 
 export const about = {
   intro:
-    "Adaptamos nuestros servicios a las necesidades específicas de cada cliente, con soluciones a la medida y asesoría estratégica en todas las etapas del desarrollo comercial.",
+    "Abrir una cuenta es sólo el principio. Comerzia se encarga de lo que sigue: desarrollarla, dar seguimiento a cada oportunidad, sostener la relación después del cierre y llevar lo que vendes a nuevos canales.",
   mission:
-    "Satisfacer las necesidades de nuestros clientes y fidelizarlos, impulsando acciones que contribuyan al desarrollo de su negocio y obteniendo los mejores resultados para la empresa y sus colaboradores, con calidad y excelencia en el servicio.",
+    "Dar continuidad a las relaciones comerciales de nuestros clientes: desarrollar cada cuenta después del primer contacto, sostener el seguimiento de sus oportunidades y abrir nuevos canales para lo que ya venden.",
   vision:
-    "Ser un referente en intermediación comercial a nivel nacional e internacional, reconocido por el valor añadido que aportamos en cada conexión entre quien vende y quien compra.",
+    "Ser la opción a la que recurren las empresas cuando quieren que sus cuentas crezcan con orden y que sus canales se amplíen sin perder el seguimiento.",
 } as const;
 
+/** Los cuatro valores de la ficha. */
 export const values = [
   {
-    title: "Calidad",
-    body: "La calidad del servicio es nuestra prioridad. Nos esforzamos por ofrecer una experiencia excepcional.",
-  },
-  {
-    title: "Profesionalismo",
-    body: "El profesionalismo no es solo una habilidad: es una actitud que se refleja en cada aspecto de nuestro trabajo.",
-  },
-  {
-    title: "Compromiso",
-    body: "Su satisfacción es nuestro mayor logro, y trabajamos para alcanzarla en cada paso del camino.",
-  },
-  {
     title: "Confianza",
-    body: "La confianza en nuestro servicio es nuestro compromiso central, y trabajamos todos los días para mantenerla.",
+    body: "Lo que se habla con tus clientes queda documentado y a la vista de tu empresa. Ninguna condición se compromete sin tu aprobación.",
+  },
+  {
+    title: "Seguimiento",
+    body: "Cada cuenta y cada oportunidad tienen un responsable, un siguiente paso y una fecha. Nada se queda en el aire después de una reunión.",
+  },
+  {
+    title: "Agilidad",
+    body: "Atendemos los cambios de cada cuenta —un pedido nuevo, un ajuste de condiciones, un canal que se abre— en cuanto ocurren.",
+  },
+  {
+    title: "Servicio",
+    body: "Atendemos a tus clientes con el cuidado con que lo harías tú: la relación es de tu empresa y nuestro trabajo es hacerla crecer.",
   },
 ] as const;
 
-/** Citas del espejo, adaptadas. */
+/** Frases propias de Comerzia; sustituyen a las citas genéricas del espejo. */
 export const quotes = {
-  home: "Buscamos la satisfacción continua de nuestros clientes con un servicio que exceda sus expectativas y una adaptación competitiva en el mercado.",
+  home: "El primer pedido abre la cuenta. El seguimiento es lo que la hace crecer.",
   services:
-    "Somos una empresa creada para dar soluciones a la comercialización de productos de manera eficaz y eficiente.",
-  about:
-    "Desde el primer contacto hasta la entrega final, nos comprometemos a superar sus expectativas.",
+    "Las condiciones, la facturación y los cobros quedan siempre entre tu empresa y tus clientes. Nosotros documentamos, damos seguimiento y desarrollamos la cuenta.",
 } as const;
 
 export const contactIntro =
-  "Será un placer atenderle. Déjenos sus datos y un especialista se pondrá en contacto con usted.";
+  "Cuéntanos qué vendes, a quién le vendes hoy y dónde quieres crecer. Te respondemos para agendar una primera conversación.";

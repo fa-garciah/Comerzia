@@ -21,12 +21,12 @@ const quadrant = [
   <section class="hero" data-tone="forest">
     <div class="wrap hero__inner">
       <div class="hero__copy">
-        <p class="eyebrow">Intermediación comercial</p>
+        <p class="eyebrow">Desarrollo de cuentas y canales</p>
         <h1>{site.slogan}</h1>
         <p class="lead hero__lead">
-          Creamos conexiones estratégicas que impulsan el crecimiento de su
-          empresa: encontramos a quién venderle, negociamos por usted y damos
-          seguimiento a cada cuenta.
+          Desarrollamos tus cuentas, damos seguimiento a cada oportunidad,
+          sostenemos la continuidad comercial después del cierre y llevamos lo
+          que vendes a nuevos canales.
         </p>
         <div class="hero__actions">
           <a class="btn btn--lime" href="/contacto/">
@@ -43,10 +43,10 @@ const quadrant = [
   <section class="section">
     <div class="wrap split firm">
       <div data-reveal>
-        <p class="eyebrow">Nuestra firma</p>
-        <h2>Comerzia es su socio de negocio</h2>
+        <p class="eyebrow">Nuestro enfoque</p>
+        <h2>Después del primer contacto empieza nuestro trabajo</h2>
         <p class="lead firm__lead">{about.intro}</p>
-        <p class="firm__more"><a class="link-arrow" href="/nosotros/">Conozca la firma →</a></p>
+        <p class="firm__more"><a class="link-arrow" href="/nosotros/">Conoce Comerzia →</a></p>
       </div>
       <div data-reveal style="--delay:80ms">
         <Photo
@@ -62,7 +62,7 @@ const quadrant = [
     <div class="wrap">
       <div class="head" data-reveal>
         <p class="eyebrow">Servicios</p>
-        <h2>Del primer contacto a la relación continua</h2>
+        <h2>Cuatro frentes para que cada cuenta crezca</h2>
       </div>
       <ol class="services" role="list">
         {services.map((s, i) => (
@@ -88,7 +88,7 @@ const quadrant = [
         </div>
         <p class="lead">
           Trabajamos con empresas que venden a otras empresas. Cada zona del mapa
-          es un tipo de cliente, y la ruta es la misma para todas.
+          es un tipo de cliente; el seguimiento es el mismo para todas.
         </p>
       </div>
       <div data-reveal>
@@ -120,8 +120,8 @@ const quadrant = [
   <section class="section" data-tone="subtle">
     <div class="wrap">
       <div class="head" data-reveal>
-        <p class="eyebrow">Cómo trabajamos</p>
-        <h2>Una ruta que asciende</h2>
+        <p class="eyebrow">Embudo comercial</p>
+        <h2>De la cuenta objetivo al desarrollo de la cuenta</h2>
       </div>
       <AscentRoute steps={route} />
     </div>
@@ -146,7 +146,7 @@ const quadrant = [
   .hero__map { max-width: 560px; }
   @media (max-width: 959px) { .hero__map { max-width: 420px; } }
 
-  .firm h2 { max-width: 14ch; }
+  .firm h2 { max-width: 18ch; }
   .firm__lead { margin-top: var(--space-m); max-width: 46ch; }
   .firm__more { margin-top: var(--space-m); }
 
@@ -156,7 +156,8 @@ const quadrant = [
   @media (min-width: 900px) { .head--split { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); } }
 
   .services { display: grid; gap: var(--space-m); }
-  @media (min-width: 860px) { .services { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 700px) { .services { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .services { grid-template-columns: repeat(4, 1fr); } }
   .service { display: flex; flex-direction: column; gap: var(--space-s); padding-top: calc(var(--space-l) + 10px); }
   /* the lima bar grows card by card: the route, again, at the smallest scale */
   .service::before {

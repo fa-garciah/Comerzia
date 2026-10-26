@@ -4,11 +4,11 @@ import PageHero from "../components/PageHero.astro";
 import CtaBand from "../components/CtaBand.astro";
 import Photo from "../components/Photo.astro";
 import acuerdo from "../assets/photos/acuerdo.jpg";
-import { about, values, quotes } from "../data/site";
+import { about, values } from "../data/site";
 ---
 
-<Base title="Nosotros" description="Misión, visión y valores de Comerzia, firma de intermediación comercial.">
-  <PageHero eyebrow="Nosotros" title="Una firma para abrir mercado" lead={about.intro} step={2} />
+<Base title="Nosotros" description="Misión, visión y valores de Comerzia, firma de desarrollo de cuentas y canales comerciales.">
+  <PageHero eyebrow="Nosotros" title="Una firma para que tus cuentas crezcan" lead={about.intro} step={2} />
 
   <div class="wrap about-photo">
     <Photo
@@ -38,7 +38,7 @@ import { about, values, quotes } from "../data/site";
     <div class="wrap">
       <div data-reveal>
         <p class="eyebrow">Valores</p>
-        <h2 class="values__h">Valores que marcan la diferencia</h2>
+        <h2 class="values__h">Lo que guía el trabajo con cada cuenta</h2>
       </div>
       <ul class="values" role="list">
         {values.map((v, i) => (
@@ -49,12 +49,6 @@ import { about, values, quotes } from "../data/site";
           </li>
         ))}
       </ul>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="wrap">
-      <blockquote class="quote" data-reveal>{quotes.about}</blockquote>
     </div>
   </section>
 

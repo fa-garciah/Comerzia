@@ -3,10 +3,10 @@
  * Mapa de alcance por zonas.
  *
  * Not geography — the ficha names no territory, and the site does not invent
- * one. The four quadrants are the four markets; the three rings are the three
- * services, from first contact (outer) to ongoing follow-up (inner). The lima
- * line is the route: it climbs from a prospect at the edge, through the
- * centre where the deal is made, to a new market.
+ * one. The four quadrants are the four markets; the four rings are the four
+ * services, from the account itself (inner) out to new channels (outer). The
+ * lima line is the route: it starts at an account near the centre, passes
+ * through the hub and climbs outward to a new channel at the edge.
  *
  * Hovering a quadrant highlights it (pure CSS, no script).
  */
@@ -17,9 +17,10 @@ const { class: className, id = "reach-map" } = Astro.props;
 
 const C = 240;
 const rings = [
-  { r: 200, label: "Prospección" },
-  { r: 135, label: "Intermediación" },
-  { r: 70, label: "Seguimiento" },
+  { r: 200, label: "Canales" },
+  { r: 155, label: "Continuidad" },
+  { r: 110, label: "Oportunidades" },
+  { r: 65, label: "Cuentas" },
 ];
 const rad = (deg: number) => (deg * Math.PI) / 180;
 const pt = (deg: number, r: number) => ({
@@ -36,7 +37,7 @@ const corner = [
   { x: 14, y: 464, anchor: "start" },
 ];
 // node positions inside a quadrant: [degrees from its start, ring radius]
-const spots: [number, number][] = [[22, 200], [64, 200], [40, 135], [45, 70]];
+const spots: [number, number][] = [[22, 200], [64, 200], [38, 155], [70, 110], [30, 65]];
 
 const R = rings[0].r;
 const zones = markets.map((m, i) => {
@@ -51,8 +52,8 @@ const zones = markets.map((m, i) => {
   };
 });
 
-// the ascending route: bottom-left prospect → centre → top-right new market
-const route = [pt(112, 200), pt(130, 135), { x: C, y: C }, pt(315, 70), pt(334, 200)];
+// the ascending route: an account (bottom left) → hub → out to a new channel (top right)
+const route = [pt(128, 110), { x: C, y: C }, pt(300, 65), pt(318, 110), pt(326, 155), pt(334, 200)];
 const routeD = "M" + route.map((p) => `${p.x} ${p.y}`).join(" L");
 const end = route[route.length - 1];
 ---
@@ -62,9 +63,9 @@ const end = route[route.length - 1];
     <title id={`${id}-t`}>Mapa de alcance por zonas</title>
     <desc id={`${id}-d`}>
       Cuatro zonas de mercado — comercializadoras, distribuidores, industria y
-      proveedores — atravesadas por tres anillos de servicio: prospección,
-      intermediación y seguimiento. Una ruta asciende desde un prospecto en el
-      borde hasta un nuevo mercado.
+      proveedores — atravesadas por cuatro anillos de servicio: cuentas,
+      oportunidades, continuidad y canales. Una ruta sale de una cuenta cerca
+      del centro y se extiende hasta un nuevo canal en el borde.
     </desc>
 
     {rings.map((ring) => (
